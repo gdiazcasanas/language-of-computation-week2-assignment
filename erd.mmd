@@ -1,0 +1,46 @@
+erDiagram
+    AUTHORS ||--o{ BOOK_AUTHORS : writes
+    BOOKS ||--|{ BOOK_AUTHORS : "written by"
+    BOOKS ||--o{ COPIES : "has"
+    COPIES ||--o{ LOANS : "lent in"
+    MEMBERS ||--o{ LOANS : borrows
+
+    AUTHORS {
+        INTEGER author_id PK
+        TEXT first_name
+        TEXT last_name
+    }
+    BOOKS {
+        INTEGER book_id PK
+        TEXT title
+        TEXT isbn UK
+        INTEGER published_year
+        TEXT genre
+    }
+    BOOK_AUTHORS {
+        INTEGER book_id PK, FK
+        INTEGER author_id PK, FK
+    }
+    COPIES {
+        INTEGER copy_id PK
+        INTEGER book_id FK
+        DATE acquired_on
+        TEXT condition "new | good | fair | poor | lost"
+    }
+    MEMBERS {
+        INTEGER member_id PK
+        TEXT first_name
+        TEXT last_name
+        TEXT email UK
+        TEXT phone
+        DATE joined_on
+        TEXT status "active | suspended"
+    }
+    LOANS {
+        INTEGER loan_id PK
+        INTEGER copy_id FK "one open loan per copy"
+        INTEGER member_id FK
+        DATE borrowed_on
+        DATE due_on
+        DATE returned_on "NULL while checked out"
+    }
